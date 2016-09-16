@@ -9,7 +9,7 @@
 local stringx = require('pl.stringx')
 local file = require('pl.file')
 
-local ptb_path = "./data/"
+local ptb_path = "/home/tastyminerals/dev/lstm-zaremba/data/"
 
 local vocab_idx = 0
 local vocab_map = {}
@@ -29,7 +29,7 @@ end
 
 local function load_data(fname)
    local data = file.read(fname)
-   data = stringx.replace(data, '\n', '<eos>')
+   --data = stringx.replace(data, '\n', '<eos>')
    data = stringx.split(data)
    print(string.format("Loading %s, size of data = %d", fname, #data))
    local x = torch.zeros(#data)
@@ -44,7 +44,7 @@ local function load_data(fname)
 end
 
 local function traindataset(batch_size)
-   local x = load_data(ptb_path .. "ptb.train.txt")
+   local x = load_data(ptb_path .. "mini_train.txt")
    x = replicate(x, batch_size)
    return x
 end
@@ -52,13 +52,13 @@ end
 -- Intentionally we repeat dimensions without offseting.
 -- Pass over this batch corresponds to the fully sequential processing.
 local function testdataset(batch_size)
-   local x = load_data(ptb_path .. "ptb.test.txt")
+   local x = load_data(ptb_path .. "mini_testi.txt")
    x = x:resize(x:size(1), 1):expand(x:size(1), batch_size)
    return x
 end
 
 local function validdataset(batch_size)
-   local x = load_data(ptb_path .. "ptb.valid.txt")
+   local x = load_data(ptb_path .. "mini_valid.txt")
    x = replicate(x, batch_size)
    return x
 end
