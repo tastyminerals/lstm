@@ -62,6 +62,7 @@ local state_train, state_valid, state_test
 local model = {}
 local paramx, paramdx
 
+--[[
 local function lstm(x, prev_c, prev_h)
   -- Calculate all four gates in one go
   local i2h = nn.Linear(params.rnn_size, 4*params.rnn_size)(x)
@@ -87,6 +88,7 @@ local function lstm(x, prev_c, prev_h)
 
   return next_c, next_h
 end
+]]
 
 local function create_network()
   local x                = nn.Identity()()

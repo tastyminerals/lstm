@@ -31,9 +31,6 @@ local function load_data(fname)
    local data = file.read(fname)
    --data = stringx.replace(data, '\n', '<eos>')
    data = stringx.split(data)
-   print(data)
-   os.exit()
-   
    print(string.format("Loading %s, size of data = %d", fname, #data))
    local x = torch.zeros(#data)
    for i = 1, #data do
@@ -43,6 +40,7 @@ local function load_data(fname)
       end
       x[i] = vocab_map[data[i]]
    end
+   print("Vocab map size: "..#x)
    return x
 end
 
@@ -55,7 +53,7 @@ end
 -- Intentionally we repeat dimensions without offseting.
 -- Pass over this batch corresponds to the fully sequential processing.
 local function testdataset(batch_size)
-   local x = load_data(ptb_path .. "mini_testi.txt")
+   local x = load_data(ptb_path .. "mini_test.txt")
    x = x:resize(x:size(1), 1):expand(x:size(1), batch_size)
    return x
 end
