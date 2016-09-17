@@ -31,6 +31,9 @@ local function load_data(fname)
    local data = file.read(fname)
    --data = stringx.replace(data, '\n', '<eos>')
    data = stringx.split(data)
+   print(data)
+   os.exit()
+   
    print(string.format("Loading %s, size of data = %d", fname, #data))
    local x = torch.zeros(#data)
    for i = 1, #data do
