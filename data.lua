@@ -15,7 +15,7 @@ local vocab_idx = 0
 local vocab_map = {}
 
 
--- compute vocabulary size given per file
+-- compute vocabulary size given file
 local function cntkeys(table)
     local cnt = 0
     for k,v in next,table do
