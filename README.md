@@ -1,3 +1,5 @@
+forked for some experiments...
+
 Long Short Term Memory Units
 ============================
 This is self-contained package to train a language model on word level Penn Tree Bank dataset. 
