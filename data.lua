@@ -14,6 +14,16 @@ local ptb_path = "/home/tastyminerals/dev/lstm-zaremba/data/"
 local vocab_idx = 0
 local vocab_map = {}
 
+
+-- compute vocabulary size given per file
+local function cntkeys(table)
+    local cnt = 0
+    for k,v in next,table do
+        cnt = cnt + 1
+    end
+    return cnt
+end
+
 -- Stacks replicated, shifted versions of x_inp
 -- into a single matrix of size x_inp:size(1) x batch_size.
 local function replicate(x_inp, batch_size)
@@ -40,28 +50,27 @@ local function load_data(fname)
       end
       x[i] = vocab_map[data[i]]
    end
-   print("Vocab map size: "..#x)
-   return x
+   return x, cntkeys(vocab_map)
 end
 
 local function traindataset(batch_size)
-   local x = load_data(ptb_path .. "mini_train.txt")
+   local x,cnt = load_data(ptb_path .. "mini_train.txt")
    x = replicate(x, batch_size)
-   return x
+   return x,cnt
 end
 
 -- Intentionally we repeat dimensions without offseting.
 -- Pass over this batch corresponds to the fully sequential processing.
 local function testdataset(batch_size)
-   local x = load_data(ptb_path .. "mini_test.txt")
+   local x,cnt = load_data(ptb_path .. "mini_test.txt")
    x = x:resize(x:size(1), 1):expand(x:size(1), batch_size)
-   return x
+   return x,cnt
 end
 
 local function validdataset(batch_size)
-   local x = load_data(ptb_path .. "mini_valid.txt")
+   local x,cnt = load_data(ptb_path .. "mini_valid.txt")
    x = replicate(x, batch_size)
-   return x
+   return x,cnt
 end
 
 return {traindataset=traindataset,

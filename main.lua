@@ -62,7 +62,6 @@ local state_train, state_valid, state_test
 local model = {}
 local paramx, paramdx
 
---[[
 local function lstm(x, prev_c, prev_h)
   -- Calculate all four gates in one go
   local i2h = nn.Linear(params.rnn_size, 4*params.rnn_size)(x)
@@ -88,7 +87,6 @@ local function lstm(x, prev_c, prev_h)
 
   return next_c, next_h
 end
-]]
 
 local function create_network()
   local x                = nn.Identity()()
@@ -225,9 +223,15 @@ end
 
 local function main()
   g_init_gpu(arg)
-  state_train = {data=transfer_data(ptb.traindataset(params.batch_size))}
-  state_valid =  {data=transfer_data(ptb.validdataset(params.batch_size))}
-  state_test =  {data=transfer_data(ptb.testdataset(params.batch_size))}
+  local ptrain,cnt1 = ptb.traindataset(params.batch_size)
+  local pvalid,cnt2 = ptb.validdataset(params.batch_size)
+  local ptest,cnt3 = ptb.testdataset(params.batch_size)
+  -- recalc the size of the vocabulary
+  local new_vocab_size = math.max(cnt1,cnt2,cnt3)
+  params.vocab_size = new_vocab_size
+  state_train = {data=transfer_data(ptrain)}
+  state_valid =  {data=transfer_data(pvalid)}
+  state_test =  {data=transfer_data(ptest)}
   print("Network parameters:")
   print(params)
   local states = {state_train, state_valid, state_test}
