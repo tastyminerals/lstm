@@ -1,4 +1,4 @@
-forked to do some experiments
+forked for some experiments...
 
 Long Short Term Memory Units
 ============================
