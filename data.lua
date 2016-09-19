@@ -1,5 +1,4 @@
---
-----  Copyright (c) 2014, Facebook, Inc.
+
 ----  All rights reserved.
 ----
 ----  This source code is licensed under the Apache 2 license found in the
@@ -9,7 +8,7 @@
 local stringx = require('pl.stringx')
 local file = require('pl.file')
 
-local ptb_path = "/home/tastyminerals/dev/lstm-zaremba/data/"
+local ptb_path = "/local/pavels/lstm-zaremba/data/"
 
 local vocab_idx = 0
 local vocab_map = {}
@@ -54,7 +53,7 @@ local function load_data(fname)
 end
 
 local function traindataset(batch_size)
-   local x,cnt = load_data(ptb_path .. "mini_train.txt")
+   local x,cnt = load_data(ptb_path .. "train.txt")
    x = replicate(x, batch_size)
    return x,cnt
 end
@@ -62,13 +61,13 @@ end
 -- Intentionally we repeat dimensions without offseting.
 -- Pass over this batch corresponds to the fully sequential processing.
 local function testdataset(batch_size)
-   local x,cnt = load_data(ptb_path .. "mini_test.txt")
+   local x,cnt = load_data(ptb_path .. "test.txt")
    x = x:resize(x:size(1), 1):expand(x:size(1), batch_size)
    return x,cnt
 end
 
 local function validdataset(batch_size)
-   local x,cnt = load_data(ptb_path .. "mini_valid.txt")
+   local x,cnt = load_data(ptb_path .. "valid.txt")
    x = replicate(x, batch_size)
    return x,cnt
 end
